@@ -4,8 +4,7 @@
 #include <limits.h>
 using namespace std;
 
-// A structure to represent a
-// node in adjacency list
+//node in adjacency list
 struct AdjListNode
 {
     int dest;
@@ -13,23 +12,21 @@ struct AdjListNode
     struct AdjListNode *next;
 };
 
+//list gives all the nodes connected to a particular vertex
 struct AdjList
 {
     struct AdjListNode *head;
 };
 
-// A structure to represent a graph.
-// A graph is an array of adjacency lists.
-// Size of array will be V (number of
-// vertices in graph)
+
+//geaph is an array of all adjacency lists, size =no of vertices
 struct Graph
 {
     int V;
     struct AdjList *array;
 };
 
-// A utility function to create
-// a new adjacency list node
+//create new adjacency list node
 struct AdjListNode *newAdjListNode(
     int dest, int weight)
 {
@@ -42,42 +39,35 @@ struct AdjListNode *newAdjListNode(
     return newNode;
 }
 
-// A utility function that creates
-// a graph of V vertices
+//create a graph
 struct Graph *createGraph(int V)
 {
     struct Graph *graph = (struct Graph *)
         malloc(sizeof(struct Graph));
     graph->V = V;
 
-    // Create an array of adjacency lists.
-    // Size of array will be V
+   //creating array, each element will represent an Adjacency List
     graph->array = (struct AdjList *)
         malloc(V * sizeof(struct AdjList));
 
-    // Initialize each adjacency list
-    // as empty by making head as NULL
+    //initially all list empty
     for (int i = 0; i < V; ++i)
         graph->array[i].head = NULL;
 
     return graph;
 }
 
-// Adds an edge to an undirected graph
+//adding edge to undirected graphs
 void addEdge(struct Graph *graph, int src,
              int dest, int weight)
 {
-    // Add an edge from src to dest.
-    // A new node is added to the adjacency
-    // list of src. The node is
-    // added at the beginning
+    //for adding an edge from src to dest, add a node in src with dest(weight of edge given) at the beginning
     struct AdjListNode *newNode =
         newAdjListNode(dest, weight);
     newNode->next = graph->array[src].head;
     graph->array[src].head = newNode;
 
-    // Since graph is undirected,
-    // add an edge from dest to src also
+    //undirected graph, so similarly one from dest to src
     newNode = newAdjListNode(src, weight);
     newNode->next = graph->array[dest].head;
     graph->array[dest].head = newNode;

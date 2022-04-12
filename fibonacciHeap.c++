@@ -5,7 +5,6 @@
 #include "fibonacciHeaps.h"
 using namespace std;
 
-
 void printArr(int dist[], int n)
 {
     printf("Vertex Distance from Source\n");

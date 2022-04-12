@@ -5,11 +5,6 @@
 #include "binaryHeaps.h"
 using namespace std;
 
-// A structure to represent a
-// node in adjacency list
-
-
-// A utility function used to print the solution
 void printArr(int dist[], int n)
 {
     printf("Vertex Distance from Source\n");
@@ -17,24 +12,20 @@ void printArr(int dist[], int n)
         printf("%d \t\t %d\n", i, dist[i]);
 }
 
-// The main function that calculates
-// distances of shortest paths from src to all
-// vertices. It is a O(ELogV) function
-void dijkstra(struct Graph *graph, int src)
+//calculating shortest path from src to all the vertices.
+//Time complexity: O(E*logV + V*logV)
+void dijkstra( Graph *graph, int src)
 {
 
-    // Get the number of vertices in graph
+    //number of vertices in graph
     int V = graph->V;
-
-    // dist values used to pick
-    // minimum weight edge in cut
+    //it stores the distance values
     int dist[V];
 
-    // minHeap represents set E
-    struct MinHeap *minHeap = createMinHeap(V);
+    //heap is basically made on the basis of weights of edges
+     MinHeap *minHeap = createMinHeap(V);
 
-    // Initialize min heap with all
-    // vertices. dist value of all vertices
+  
     for (int v = 0; v < V; ++v)
     {
         dist[v] = INT_MAX;
@@ -43,67 +34,56 @@ void dijkstra(struct Graph *graph, int src)
         minHeap->pos[v] = v;
     }
 
-    // Make dist value of src vertex
-    // as 0 so that it is extracted first
+    //distance of src=0
     minHeap->array[src] =
         newMinHeapNode(src, dist[src]);
     minHeap->pos[src] = src;
     dist[src] = 0;
     decreaseKey(minHeap, src, dist[src]);
 
-    // Initially size of min heap is equal to V
     minHeap->size = V;
 
     // In the followin loop,
     // min heap contains all nodes
     // whose shortest distance
     // is not yet finalized.
-    while (!isEmpty(minHeap))
+    while (minHeap->size > 0)
     {
-        // Extract the vertex with
-        // minimum distance value
+        //extarct the vertex with minimum distance
         struct MinHeapNode *minHeapNode =
             extractMin(minHeap);
 
         // Store the extracted vertex number
         int u = minHeapNode->v;
 
-        // Traverse through all adjacent
-        // vertices of u (the extracted
-        // vertex) and update
-        // their distance values
+        //traverse all the connected vertices with u and update the distances if needed
         struct AdjListNode *pCrawl =
             graph->array[u].head;
         while (pCrawl != NULL)
         {
             int v = pCrawl->dest;
 
-            // If shortest distance to v is
-            // not finalized yet, and distance to v
-            // through u is less than its
-            // previously calculated distance
+            //if shortest path till u is finalised and the path till v is greater than from src to u and u to v, then we update the distance
             if (isInMinHeap(minHeap, v) &&
                 dist[u] != INT_MAX &&
                 pCrawl->weight + dist[u] < dist[v])
             {
                 dist[v] = dist[u] + pCrawl->weight;
 
-                // update distance
-                // value in min heap also
+                //update the value in minheap as well
                 decreaseKey(minHeap, v, dist[v]);
             }
             pCrawl = pCrawl->next;
         }
     }
 
-    // print the calculated shortest distances
     printArr(dist, V);
 }
 
-// Driver program to test above functions
+
 int main()
 {
-    // create the graph given in above fugure
+   
     int V = 9;
     struct Graph *graph = createGraph(V);
     addEdge(graph, 0, 1, 4);
