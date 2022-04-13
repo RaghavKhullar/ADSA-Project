@@ -5,27 +5,27 @@
 #include "graphs.h"
 using namespace std;
 
-// Creating a structure to represent a node in the heap
+//structure to represent a node in the heap
 struct node {
-	node* parent; // Parent pointer
-	node* child; // Child pointer
-	node* left; // Pointer to the node on the left
-	node* right; // Pointer to the node on the right
-	int key; // Value of the node
-	int degree; // Degree of the node
+	node* parent; // parent pointer
+	node* child; // pointer to the child
+	node* left; // left pointer
+	node* right; // right pointer
+	int key; // vertex value/name
+	int degree; // degree of the node
 	char mark; // Black or white mark of the node
-	char c; // Flag for assisting in the Find node function
-    int dist;
+	char c; 
+    int dist;//the minimum distance of node from src
 };
-
+//capacity of the heap
 int capacity;
-// Creating min pointer as "mini"
+// min pointer as "mini"
 struct node* mini = NULL;
 
-// Declare an integer for number of nodes in the heap
+//number of nodes in the heap
 int no_of_nodes = 0;
 
-// Function to insert a node in heap
+//  insert a node in heap
 node* insertion(int val,int dist)
 {
 	struct node* new_node = new node();
@@ -52,7 +52,7 @@ node* insertion(int val,int dist)
 	no_of_nodes++;
     return new_node;
 }
-// Linking the heap nodes in parent child relationship
+// link heap nodes in parent child relationship
 void Fibonnaci_link(struct node* ptr2, struct node* ptr1)
 {
 	(ptr2->left)->right = ptr2->right;
@@ -130,7 +130,7 @@ void Consolidate()
 	}
 }
 
-// Function to extract minimum node in the heap
+//  extract minimum node in the heap
 void Extract_min()
 { 
 	if (mini == NULL)
@@ -168,7 +168,7 @@ void Extract_min()
 	}
 }
 
-// Cutting a node in the heap to be placed in the root list
+// place the node from tree to the root list
 void Cut(struct node* found, struct node* temp)
 {
 	if (found == found->right)
@@ -190,7 +190,7 @@ void Cut(struct node* found, struct node* temp)
 	found->mark = 'B';
 }
 
-// Recursive cascade cutting function
+//  cascade cutting function
 void Cascase_cut(struct node* temp)
 {
 	node* ptr5 = temp->parent;
@@ -205,7 +205,7 @@ void Cascase_cut(struct node* temp)
 	}
 }
 
-// Function to decrease the value of a node in the heap
+//  decrease the value of a node in the heap
 void Decrease_key(struct node* found, int val)
 {
 	if (mini == NULL)
@@ -225,7 +225,7 @@ void Decrease_key(struct node* found, int val)
 		mini = found;
 }
 
-// Function to find the given node
+// find the given node and decrease if founf
 void Find(struct node* mini, int old_val, int val)
 {
 	struct node* found = NULL;
