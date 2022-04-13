@@ -1,9 +1,6 @@
-#include <iostream>
-#include <stdlib.h>
-#include <vector>
-#include <limits.h>
 #include "binaryHeaps.h"
 #include <chrono>
+#include<bits/stdc++.h>
 using namespace std;
 using namespace std::chrono;
 
@@ -83,37 +80,26 @@ void dijkstra( Graph *graph, int src)
 
 int main()
 {
-   auto start = high_resolution_clock::now();
-    int V = 9;
+
+
+    int V=9;
     struct Graph *graph = createGraph(V);
-    addEdge(graph, 0, 1, 4);
-    addEdge(graph,1,0,4);
+    
+    addEdge(graph,0,1,4);
     addEdge(graph,0,7,8);
-    addEdge(graph,7,0,8);
     addEdge(graph,1,7,11);
-    addEdge(graph,7,1,11);
     addEdge(graph,1,2,8);
-    addEdge(graph,2,1,8);
     addEdge(graph,7,6,1);
-    addEdge(graph,6,7,1);
     addEdge(graph,7,8,7);
-    addEdge(graph,8,7,7);
     addEdge(graph,2,8,2);
-    addEdge(graph,8,2,2);
     addEdge(graph,8,6,6);
-    addEdge(graph,6,8,6);
     addEdge(graph,2,3,7);
-    addEdge(graph,3,2,7);
     addEdge(graph,6,5,2);
-    addEdge(graph,5,6,2);
     addEdge(graph,2,5,4);
-    addEdge(graph,5,2,4);
     addEdge(graph,3,5,14);
-    addEdge(graph,5,3,14);
     addEdge(graph,3,4,9);
-    addEdge(graph,4,3,9);
     addEdge(graph,5,4,10);
-    addEdge(graph,4,5,10);
+    auto start = high_resolution_clock::now();
     dijkstra(graph, 0);
     auto stop = high_resolution_clock::now();
 	auto duration = duration_cast<microseconds>(stop - start);

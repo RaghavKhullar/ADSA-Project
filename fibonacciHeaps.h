@@ -13,7 +13,7 @@ struct node {
 	node* right; // right pointer
 	int key; // vertex value/name
 	int degree; // degree of the node
-	char mark; // Black or white mark of the node
+	char mark; // Black or white mark of the node, unmarked->white marked->black
 	char c; 
     int dist;//the minimum distance of node from src
 };
@@ -52,7 +52,7 @@ node* insertion(int val,int dist)
 	no_of_nodes++;
     return new_node;
 }
-// link heap nodes in parent child relationship
+// link heap nodes in parent child relationship,make the child as one which has larger distance value
 void Fibonnaci_link(struct node* ptr2, struct node* ptr1)
 {
 	(ptr2->left)->right = ptr2->right;
@@ -72,8 +72,8 @@ void Fibonnaci_link(struct node* ptr2, struct node* ptr1)
 		ptr1->child = ptr2;
 	ptr1->degree++;
 }
-// Consolidating the heap
-void Consolidate()
+// merges heap after extraction or deletion
+void mergeHeapsAfterExtraction()
 {
 	int temp1;
 	float temp2 = (log(no_of_nodes)) / (log(2));
@@ -162,7 +162,7 @@ void Extract_min()
 			mini = NULL;
 		else {
 			mini = temp->right;
-			Consolidate();
+			mergeHeapsAfterExtraction();
 		}
 		no_of_nodes--;
 	}
@@ -190,8 +190,8 @@ void Cut(struct node* found, struct node* temp)
 	found->mark = 'B';
 }
 
-//  cascade cutting function
-void Cascase_cut(struct node* temp)
+// marking after a node is removed from its place
+void mark_cut(struct node* temp)
 {
 	node* ptr5 = temp->parent;
 	if (ptr5 != NULL) {
@@ -200,7 +200,7 @@ void Cascase_cut(struct node* temp)
 		}
 		else {
 			Cut(temp, ptr5);
-			Cascase_cut(ptr5);
+			mark_cut(ptr5);
 		}
 	}
 }
@@ -209,7 +209,7 @@ void Cascase_cut(struct node* temp)
 void Decrease_key(struct node* found, int val)
 {
 	if (mini == NULL)
-		cout << "The Heap is Empty!!" << endl;
+		cout << "The Heap is Empty!!!" << endl;
 
 	if (found == NULL)
 		cout << "Node not found in the Heap" << endl;
@@ -219,14 +219,14 @@ void Decrease_key(struct node* found, int val)
 	struct node* temp = found->parent;
 	if (temp != NULL && found->dist < temp->dist) {
 		Cut(found, temp);
-		Cascase_cut(temp);
+		mark_cut(temp);
 	}
 	if (found->dist < mini->dist)
 		mini = found;
 }
 
-// find the given node and decrease if founf
-void Find(struct node* mini, int old_val, int val)
+// findAndDecreaseNode the given node and decrease if founf
+void findAndDecreaseNode(struct node* mini, int old_val, int val)
 {
 	struct node* found = NULL;
 	node* temp5 = mini;
@@ -240,9 +240,9 @@ void Find(struct node* mini, int old_val, int val)
 	}
 	if (found_ptr == NULL) {
 		if (temp5->child != NULL)
-			Find(temp5->child, old_val, val);
+			findAndDecreaseNode(temp5->child, old_val, val);
 		if ((temp5->right)->c != 'Y')
-			Find(temp5->right, old_val, val);
+			findAndDecreaseNode(temp5->right, old_val, val);
 	}
 	temp5->c = 'N';
 	found = found_ptr;

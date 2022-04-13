@@ -28,8 +28,7 @@ struct MinHeap
 };
 
 //creates a new min-heap node
- MinHeapNode *newMinHeapNode(int v,
-                                   int dist)
+ MinHeapNode *newMinHeapNode(int v, int dist)
 {
      MinHeapNode *minHeapNode =
         ( MinHeapNode *)
